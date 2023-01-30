@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/config/multer.config';
+import { multerOptions } from '../config/multer.config';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -13,7 +13,7 @@ export class UserController {
     constructor(private readonly userService: UserService) { }
 
     @Post('create')
-    async register(@Body() body: CreateUserDto) {
+    async create(@Body() body: CreateUserDto) {
         return this.userService.create(body);
     }
 

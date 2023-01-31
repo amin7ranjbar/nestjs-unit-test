@@ -14,7 +14,7 @@ export class UserService {
     private readonly jwtService: JwtService,
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
-  ) { }
+  ) {}
 
   async create(body: CreateUserDto) {
     const hashedPassword = await hash(body.password, 10);
@@ -61,12 +61,14 @@ export class UserService {
 
   async increase(body: DecreaseCreditDto) {
     const user = await this.getByEmail(body.email);
-    user.credit = user.credit + parseInt(this.convertPersianToEnglish(body.count));
+    user.credit =
+      user.credit + parseInt(this.convertPersianToEnglish(body.count));
     await this.usersRepository.save(user);
     return user.credit;
   }
 
-  convertPersianToEnglish = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+  convertPersianToEnglish = (s) =>
+    s.replace(/[۰-۹]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 
   async getByEmail(email: string) {
     const user = await this.usersRepository.findOneBy({ email });
@@ -82,8 +84,7 @@ export class UserService {
   private async createAccessToken(
     id: number,
     email: string,
-  ): Promise<{ accessToken: string; }> {
-    const AFTER_ONE_DAY = 24 * 60 * 60;
+  ): Promise<{ accessToken: string }> {
     const accessToken = this.jwtService.sign({ id, email });
     return { accessToken };
   }
